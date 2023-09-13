@@ -8,12 +8,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DataFiles\chunks_Rus.txt" />
+    <None Remove="DataFiles\Eng.txt" />
+    <None Remove="DataFiles\muteOf.png" />
+    <None Remove="DataFiles\muteOn.jpg" />
+    <None Remove="DataFiles\myagkoe-spokoynoe-najatie-klavishi.mp3" />
+    <None Remove="DataFiles\Rus.txt" />
+    <None Remove="DataFiles\wrong_key.mp3" />
     <None Remove="maket.jpg" />
-    <None Remove="TextUnits\chunks.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="TextUnits\chunks.txt">
+    <Content Include="DataFiles\chunks_Rus.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Eng.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\muteOf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\muteOn.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\myagkoe-spokoynoe-najatie-klavishi.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Rus.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\wrong_key.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

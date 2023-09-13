@@ -1,0 +1,213 @@
+fj fj
+
+gh gh
+fjgh gh
+
+ty ty
+ghty ty
+fjghty ty
+
+bn bn
+tybn bn
+bn bn
+fjghtybn bn
+
+ru ru
+bnru ru
+ru ru
+fjghtybnru ru
+
+vm vm
+ruvm vm
+vm vm
+fjghtybnruvm vm
+
+dk dk
+vmdk dk
+dk dk
+fjghtybnruvmdk dk
+
+ei ei
+dkei ei
+ei ei
+fjghtybnruvmdkei ei
+
+c, c,
+eic, c,
+c, c,
+fjghtybnruvmdkeic, c,
+
+sl sl
+c,sl sl
+sl sl
+fjghtybnruvmdkeic,sl sl
+
+wo wo
+slwo wo
+wo wo
+fjghtybnruvmdkeic,slwo wo
+
+x. x.
+wox. x.
+x. x.
+fjghtybnruvmdkeic,slwox. x.
+
+a; a;
+x.a; a;
+a; a;
+fjghtybnruvmdkeic,slwox.a; a;
+
+qp qp
+a;qp qp
+qp qp
+fjghtybnruvmdkeic,slwox.a;qp qp
+
+z/ z/
+qpz/ z/
+z/ z/
+fjghtybnruvmdkeic,slwox.a;qpz/ z/
+
+' '
+z/' '
+' '
+fjghtybnruvmdkeic,slwox.a;qpz/' '
+
+[ [
+'[ [
+[ [
+fjghtybnruvmdkeic,slwox.a;qpz/'[ [
+
+] ]
+[] ]
+] ]
+fjghtybnruvmdkeic,slwox.a;qpz/'[] ]
+
+\ \
+]\ \
+\ \
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\ \
+
+/ /
+\/ /
+/ /
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/ /
+
+67 67
+/67 67
+67 67
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/67 67
+
+57 57
+657 57
+57 57
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/6757 57
+
+47 47
+547 47
+47 47
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/6547 47
+
+38 38
+4738 38
+38 38
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/654738 38
+
+29 29
+3829 29
+29 29
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/65473829 29
+
+10 10
+2910 10
+10 10
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/6547382910 10
+
+`- `-
+10`- `-
+`- `-
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/6547382910`- `-
+
+= =
+`-= =
+./0`-= =
+fjghtybnruvmdkeic,slwox.a;qpz/'[]\/6547382910`-= =
+
+< <
+.lo< <
+`123.lo< <
+< <
+
+> >
+.lo<> >
+12.lo9> >
+`123.lo<> >
+
+? ?
+`123? ?
+/;plkasd? ?
+`123.lo<>? ?
+
+: :
+`123: :
+asdfghjkl;: :
+`123.lo<>?: :
+
+" "
+`123" "
+asdfghjkl;'" "
+`123.lo<>?:" "
+
+{ {
+`123{ {
+'\asd{ {
+`123.lo<>?:"{ {
+
+} }
+`123} }
+[]laqz} }
+`123.lo<>?:"{} }
+
+| |
+`123| |
+asdfghjkl;'\| |
+`123.lo<>?:"{}| |
+
+^& ^&
+`123^& ^&
+1234567890^& ^&
+`123.lo<>?:"{}|^& ^&
+
+%& %&
+`123%& %&
+1234567890%& %&
+`123.lo<>?:"{}|^&%& %&
+
+$& $&
+`123$& $&
+1234567890$& $&
+`123.lo<>?:"{}|^&%&$& $&
+
+#* #*
+`123#* #*
+1234567890#* #*
+`123.lo<>?:"{}|^&%&$&#* #*
+
+@( @(
+`123@( @(
+1234567890@( @(
+`123.lo<>?:"{}|^&%&$&#*@( @(
+
+!) !)
+`123!) !)
+1234567890!) !)
+`123.lo<>?:"{}|^&%&$&#*@(!) !)
+
+~_ ~_
+`123~_ ~_
+1234567890~_ ~_
+`123.lo<>?:"{}|^&%&$&#*@(!)~_ ~_
+
++ +
+`123+ +
+1234567890+ +
+`123.lo<>?:"{}|^&%&$&#*@(!)~_+ +

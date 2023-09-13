@@ -5,13 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TypeTrainee"
         mc:Ignorable="d"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
         Title="Клавиатурный тренажёр" Height="800" Width="1500" WindowState="Maximized">
 
+
     <Window.InputBindings>
-        <KeyBinding/>
+        <KeyBinding Key="Space"
+              Modifiers="Control" 
+              Command="ApplicationCommands.Close" />
     </Window.InputBindings>
 
-    <Grid Background="#015666">
+    <Grid Background="#015666"  Focusable="False">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -51,6 +56,7 @@
                         <ColumnDefinition Width="26*"/>
                         <ColumnDefinition Width="26*"/>
                         <ColumnDefinition Width="26*"/>
+                        <ColumnDefinition Width="13*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="4*"/>
@@ -61,7 +67,7 @@
 
                     <TextBlock Grid.ColumnSpan="5" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Grid.Column="0" Margin="6,0,0,0">Уровень</TextBlock>
                     <Grid Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Margin="14,42,0,11">
-                        <TextBlock x:Name="selectedLevel"  FontSize="32" TextAlignment="Center" VerticalAlignment="Center" Padding="5" Text="1"/>
+                        <TextBlock x:Name="selectedLevel"  FontSize="32" TextAlignment="Center" VerticalAlignment="Center" Padding="5" Text="1" Tag="CurrentLevelDisplay"/>
                     </Grid>
 
 
@@ -71,10 +77,10 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <RepeatButton FontSize="12" Delay="500" Click="Plus_Button_Click" >
+                        <RepeatButton FontSize="12" Delay="500" Click="Plus_Button_Click"  Focusable="False" Margin="1" Tag="IncreaseLevel">
                             <TextBlock VerticalAlignment="Center">+</TextBlock>
                         </RepeatButton>
-                        <RepeatButton Grid.Row="1" FontSize="12" Delay="500" Click="Minus_Button_Click">
+                        <RepeatButton Grid.Row="1" FontSize="12" Delay="500" Click="Minus_Button_Click" Focusable="False" Margin="1" Tag="DecreaseLevel">
                             <TextBlock VerticalAlignment="Center">-</TextBlock>
                         </RepeatButton>
 
@@ -83,39 +89,76 @@
 
                 </Grid>
                 <Grid Grid.Column="1" Background="#04859D" Margin="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold">Скорость</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="1" FontSize="20" Grid.ColumnSpan="2" Grid.RowSpan="2" TextAlignment="Center" Padding="5">0</TextBlock>
+                    <StackPanel>
+                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold">Скорость</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="20" Grid.ColumnSpan="2" Grid.RowSpan="2" TextAlignment="Center" Padding="5" Text="0" x:Name="speedRateDisplay"></TextBlock>
+                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Желаемая скорость</TextBlock>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <RepeatButton x:Name="decreaceSpeed" Margin="5" Focusable="False" Click="decreaceSpeed_Click" Tag="DecreaseSpeed">&lt;&lt;</RepeatButton>
+                            <TextBlock x:Name="whishableSpeedRate" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="150"/>
+                            <RepeatButton x:Name="increaceSpeed" Margin="5" Grid.Column="2" Focusable="False" Click="increaceSpeed_Click" Tag="IncreaseSpeed">&gt;&gt;</RepeatButton>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Column="2"  Background="#37B6CE" Margin="1">
                     <StackPanel>
                         <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold">Точность набора</TextBlock>
-                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold">0%</TextBlock>
+                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Text="100%" x:Name="accuracyDisplay"></TextBlock>
+
+                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="5" Padding="5">Желаемая точность</TextBlock>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <RepeatButton x:Name="accuracyDecreace" Margin="5" Focusable="False" Click="accuracyDecreace_Click" Tag="DecreaseAccuracy">&lt;&lt;</RepeatButton>
+                            <TextBlock x:Name="wishibleAccuracy" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.Column="1" Text="80"/>
+                            <RepeatButton x:Name="accuracyIncreace" Margin="5" Grid.Column="2" Focusable="False" Click="accuracyIncreace_Click" Tag="IncreaseAccuracy">&gt;&gt;</RepeatButton>
+                        </Grid>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Column="3"  Background="#5FBDCE" Margin="1">
                     <StackPanel>
                         <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold">Новые символы</TextBlock>
-                        <TextBlock Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold">АО</TextBlock>
+                        <TextBlock x:Name="newLetters" Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Text="АО"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Width="50" FontSize="20" FontWeight="Bold" x:Name="btnLanguage" Margin="100,0,99,0" Click="btnLanguage_Click" Content="Рус"  Focusable="False"/>
+                            <Button Grid.Column="1" Width="50" Height="50" FontSize="20" FontWeight="Bold" x:Name="btnCapitalize" Content="ё" Click="btnCapitalize_Click" Focusable="False"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button x:Name="btnMute" Width="40" Height="40" Click="MuteButtonClick"  Focusable="False" Margin="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image x:Name="imgMute" Source="DataFiles/muteOf.png" Width="32" Height="32" Stretch="Fill"/>                                
+                                </StackPanel>
+                            </Button>
+                           
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>
             <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <Label Content="   " FontSize="24" Background="White" Foreground="Gray" Margin="0" Padding="0"/>
-                <Label Content="водопад водопад водопа" FontSize="24" Background="White" Foreground="Gray" Margin="0" Padding="0" x:Name="leftTextField"/>
-                <Label Content="д" FontSize="24" Background="Blue" Foreground="White" Margin="0" Padding="0" x:Name="centerTextField"/>
-                <Label Content=" водопад водопад" FontSize="24" Background="White" Foreground="Black" Margin="0" Padding="0" x:Name="rightTextField"/>
+                <Label Content="водопад водопад водопа" FontSize="32" Background="White" Foreground="Gray" Margin="0" Padding="0" x:Name="leftTextField" Tag="LeftString"/>
+                <Label Content="д" FontSize="32" Background="Blue" Foreground="White" Margin="0" Padding="0" x:Name="centerTextField" Tag="CenterString"/>
+                <Label Content=" водопад водопад" FontSize="32" Background="White" Foreground="Black" Margin="0" Padding="0" x:Name="rightTextField" Tag="RightString"/>
                 <Label Content="   " FontSize="24" Background="White" Foreground="Gray" Margin="0" Padding="0"/>
             </StackPanel>
         </Grid>
@@ -164,73 +207,72 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="bЁ" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="1" Background="#061F70" Foreground="White">Ё</Button>
-            <Button Name="b1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="2" Margin="1" Background="#061F70" Foreground="White">1</Button>
-            <Button Name="b2" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="4" Margin="1" Background="#1437AD" Foreground="White">2</Button>
-            <Button Name="b3" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="6" Margin="1" Background="#4869D6" Foreground="White">3</Button>
-            <Button Name="b4" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="8" Margin="1" Background="#6E86D6" Foreground="White">4</Button>
-            <Button Name="b5" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="10" Margin="1" Background="#6E86D6" Foreground="White">5</Button>
-            <Button Name="b6" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="12" Margin="1" Background="#2C4081" Foreground="White">6</Button>
-            <Button Name="b7" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="14" Margin="1" Background="#2C4081" Foreground="White">7</Button>
-            <Button Name="b8" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="16" Margin="1" Background="#4869D6" Foreground="White">8</Button>
-            <Button Name="b9" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="18" Margin="1" Background="#1437AD" Foreground="White">9</Button>
-            <Button Name="b0" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="20" Margin="1" Background="#061F70" Foreground="White">0</Button>
-            <Button Name="bMinus" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="22" Margin="1" Background="#061F70" Foreground="White">-</Button>
-            <Button Name="bEqual" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="24" Margin="1" Background="#061F70" Foreground="White">=</Button>
-            <Button Name="bDivide" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="26" Margin="1" Background="#061F70" Foreground="White">/</Button>
-            <Button Name="bErase" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="28" Margin="1">&lt;=</Button>
+            <Button x:Name="btnOem3" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="ё" Tag="Oem3" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="2" Margin="1" Background="#061F70" Foreground="White" Content="1" Tag="D1" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD2" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="4" Margin="1" Background="#1437AD" Foreground="White" Content="2" Tag="D2" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD3" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="6" Margin="1" Background="#4869D6" Foreground="White" Content="3" Tag="D3" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD4" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="8" Margin="1" Background="#6E86D6" Foreground="White" Content="4" Tag="D4" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD5" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="10" Margin="1" Background="#6E86D6" Foreground="White" Content="5" Tag="D5" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD6" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="12" Margin="1" Background="#2C4081" Foreground="White" Content="6" Tag="D6" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD7" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="14" Margin="1" Background="#2C4081" Foreground="White" Content="7" Tag="D7" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD8" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="16" Margin="1" Background="#4869D6" Foreground="White" Content="8" Tag="D8" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD9" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="18" Margin="1" Background="#1437AD" Foreground="White" Content="9" Tag="D9" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD0" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="20" Margin="1" Background="#061F70" Foreground="White" Content="0" Tag="D0" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemMinus" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="22" Margin="1" Background="#061F70" Foreground="White" Content="-" Tag="OemMinus" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemPlus" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="24" Margin="1" Background="#061F70" Foreground="White" Content="=" Tag="OemPlus" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOem5" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="26" Margin="1" Background="#061F70" Foreground="White" Content="\" Tag="Oem5" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnBack" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="28" Margin="1" Tag="Back" Focusable="False">&lt;=</Button>
             <!--Sevond Row-->
-            <Button Name="Tab" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1">Tab</Button>
-            <Button Name="bЙ" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Й</Button>
-            <Button Name="bЦ" Grid.Row="2" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Ц</Button>
-            <Button Name="bУ" Grid.Row="2" Grid.Column="7" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">У</Button>
-            <Button Name="bК" Grid.Row="2" Grid.Column="9" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">К</Button>
-            <Button Name="bЕ" Grid.Row="2" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">Е</Button>
-            <Button Name="bН" Grid.Row="2" Grid.Column="13" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">Н</Button>
-            <Button Name="bГ" Grid.Row="2" Grid.Column="15" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">Г</Button>
-            <Button Name="bШ" Grid.Row="2" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">Ш</Button>
-            <Button Name="bЩ" Grid.Row="2" Grid.Column="19" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Щ</Button>
-            <Button Name="bЗ" Grid.Row="2" Grid.Column="21" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">З</Button>
-            <Button Name="bХ" Grid.Row="2" Grid.Column="23" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Х</Button>
-            <Button Name="bЪ" Grid.Row="2" Grid.Column="25" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Ъ</Button>
-            <Button Name="bEmpty" Grid.Row="2" Grid.Column="27" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1"></Button>
+            <Button x:Name="btnTab" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1" Tag="Tab" Focusable="False">Tab</Button>
+            <Button x:Name="btnQ" Grid.Row="2" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="й" Tag="Q" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnW" Grid.Row="2" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="ц" Tag="W" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnE" Grid.Row="2" Grid.Column="7" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="у" Tag="E" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnR" Grid.Row="2" Grid.Column="9" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="к" Tag="R" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnT" Grid.Row="2" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="е" Tag="T" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnY" Grid.Row="2" Grid.Column="13" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="н" Tag="Y" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnU" Grid.Row="2" Grid.Column="15" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="г" Tag="U" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnI" Grid.Row="2" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="ш" Tag="I" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnO" Grid.Row="2" Grid.Column="19" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="щ" Tag="O" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnP" Grid.Row="2" Grid.Column="21" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="з" Tag="P" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemOpenBrackets" Grid.Row="2" Grid.Column="23" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="х" Tag="OemOpenBrackets" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOem6" Grid.Row="2" Grid.Column="25" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="ъ" Tag="Oem6" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemEmpty" Grid.Row="2" Grid.Column="27" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1" Tag="OemEmpty" Focusable="False"></Button>
             <!--Third Row-->
-            <Button Name="Caps" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1">Caps Lock</Button>
-            <Button Name="bФ" Grid.Row="4" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Ф</Button>
-            <Button Name="bЫ" Grid.Row="4" Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Ы</Button>
-            <Button Name="bВ" Grid.Row="4" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">В</Button>
-            <Button Name="bА" Grid.Row="4" Grid.Column="10" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">А</Button>
-            <Button Name="bП" Grid.Row="4" Grid.Column="12" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">П</Button>
-            <Button Name="bР" Grid.Row="4" Grid.Column="14" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">Р</Button>
-            <Button Name="bО" Grid.Row="4" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">О</Button>
-            <Button Name="bЛ" Grid.Row="4" Grid.Column="18" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">Л</Button>
-            <Button Name="bД" Grid.Row="4" Grid.Column="20" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Д</Button>
-            <Button Name="bЖ" Grid.Row="4" Grid.Column="22" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Ж</Button>
-            <Button Name="bЭ" Grid.Row="4" Grid.Column="24" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Э</Button>
-            <Button Name="bEnter" Grid.Row="4" Grid.Column="26" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1">Enter</Button>
+            <Button x:Name="btnCapital" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1" Content="Caps Lock" Tag="Capital" Focusable="False"/>
+            <Button x:Name="btnA" Grid.Row="4" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="ф" Tag="A" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnS" Grid.Row="4" Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="ы" Tag="S" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnD" Grid.Row="4" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="в" Tag="D" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnF" Grid.Row="4" Grid.Column="10" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="а" Tag="F" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnG" Grid.Row="4" Grid.Column="12" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="п" Tag="G" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnH" Grid.Row="4" Grid.Column="14" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="р" Tag="H" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnJ" Grid.Row="4" Grid.Column="16" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="о" Tag="J" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnK" Grid.Row="4" Grid.Column="18" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="л" Tag="K" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnL" Grid.Row="4" Grid.Column="20" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="д" Tag="L" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOem1" Grid.Row="4" Grid.Column="22" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="ж" Tag="Oem1" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemQuotes" Grid.Row="4" Grid.Column="24" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="э" Tag="OemQuotes" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnReturn" Grid.Row="4" Grid.Column="26" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1" Tag="Return" Focusable="False">Enter</Button>
             <!--Fourth Row-->
-            <Button Name="bShiftL" Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="1">Shift</Button>
-            <Button Name="bЯ" Grid.Row="6" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">Я</Button>
-            <Button Name="bЧ" Grid.Row="6" Grid.Column="7" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Ч</Button>
-            <Button Name="bС" Grid.Row="6" Grid.Column="9" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">С</Button>
-            <Button Name="bМ" Grid.Row="6" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">М</Button>
-            <Button Name="bИ" Grid.Row="6" Grid.Column="13" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White">И</Button>
-            <Button Name="bТ" Grid.Row="6" Grid.Column="15" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">Т</Button>
-            <Button Name="bЬ" Grid.Row="6" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White">Ь</Button>
-            <Button Name="bБ" Grid.Row="6" Grid.Column="19" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White">Б</Button>
-            <Button Name="bЮ" Grid.Row="6" Grid.Column="21" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White">Ю</Button>
-            <Button Name="bDot" Grid.Row="6" Grid.Column="23" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White">.</Button>
-            <Button Name="bShiftR" Grid.Row="6" Grid.Column="25" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="1">Shift</Button>
+            <Button x:Name="btnLeftShift" Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="1" Tag="LeftShift" Focusable="False">Shift</Button>
+            <Button x:Name="btnZ" Grid.Row="6" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="я" Tag="Z" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnX" Grid.Row="6" Grid.Column="7" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="ч" Tag="X" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnC" Grid.Row="6" Grid.Column="9" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="с" Tag="C" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnV" Grid.Row="6" Grid.Column="11" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="м" Tag="V" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnB" Grid.Row="6" Grid.Column="13" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#6E86D6" Foreground="White" Content="и" Tag="B" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnN" Grid.Row="6" Grid.Column="15" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="т" Tag="N" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnM" Grid.Row="6" Grid.Column="17" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#2C4081" Foreground="White" Content="ь" Tag="M" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemComma" Grid.Row="6" Grid.Column="19" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#4869D6" Foreground="White" Content="б" Tag="OemComma" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemPeriod" Grid.Row="6" Grid.Column="21" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#1437AD" Foreground="White" Content="ю" Tag="OemPeriod" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnOemQuestion" Grid.Row="6" Grid.Column="23" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Background="#061F70" Foreground="White" Content="." Tag="OemQuestion" Click="Letter_Button_Pressed" Focusable="False" FontSize="32"/>
+            <Button x:Name="btnRightShift" Grid.Row="6" Grid.Column="25" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="1" Tag="RightShift" Focusable="False">Shift</Button>
             <!--Fifth Row-->
-            <Button Name="bLCtrl" Grid.Row="8" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1">Ctrl</Button>
-            <Button Name="bWin" Grid.Row="8" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1">Win</Button>
-            <Button Name="bLAlt" Grid.Row="8" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1">Alt</Button>
-            <Button Name="bSpace" Grid.Row="8" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="12" Margin="1">Пробел</Button>
-            <Button Name="bRAlt" Grid.Row="8" Grid.Column="20" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1">Alt</Button>
-            <Button Name="bRWin" Grid.Row="8" Grid.Column="22" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1">Win</Button>
-            <Button Name="bFn" Grid.Row="8" Grid.Column="24" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1">Fn</Button>
-            <Button Name="bCtrl" Grid.Row="8" Grid.Column="26" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1">Ctrl</Button>
-
+            <Button x:Name="btnLeftCtrl" Grid.Row="8" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1" Tag="LeftCtrl" Focusable="False">Ctrl</Button>
+            <Button x:Name="btnLWin" Grid.Row="8" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Tag="LWin" Focusable="False">Win</Button>
+            <Button x:Name="btnSystem" Grid.Row="8" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="1" Tag="System" Focusable="False">Alt</Button>
+            <Button x:Name="btnSpace" Grid.Row="8" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="12" Margin="1"  Content="Пробел" Tag="Space" Click="Letter_Button_Pressed" Focusable="False"/>
+            <Button x:Name="btnSystemR" Grid.Row="8" Grid.Column="20" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Tag="SystemR" Focusable="False">Alt</Button>
+            <Button x:Name="btnRWin" Grid.Row="8" Grid.Column="22" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Tag="RWin" Focusable="False">Win</Button>
+            <Button x:Name="btnApps" Grid.Row="8" Grid.Column="24" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="1" Tag="Apps" Focusable="False">Fn</Button>
+            <Button x:Name="btnRightCtrl" Grid.Row="8" Grid.Column="26" Grid.RowSpan="2" Grid.ColumnSpan="4" Margin="1" Tag="RightCtrl" Focusable="False">Ctrl</Button>
         </Grid>
     </Grid>
 </Window>

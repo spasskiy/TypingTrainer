@@ -1,0 +1,222 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using TypeTrainee.Data;
+using static System.Net.Mime.MediaTypeNames;
+
+
+
+namespace TypeTrainee
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+
+        TypeTraineeLogic typeTrainee;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            typeTrainee = new(selectedLevel, speedRateDisplay, accuracyDisplay, leftTextField, centerTextField, rightTextField);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_ExitClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }        
+        
+        private void Plus_Button_Click(object sender, RoutedEventArgs e)
+        {
+            typeTrainee.PlusLevel();
+        }
+
+        private void Minus_Button_Click(object sender, RoutedEventArgs e)
+        {
+            typeTrainee.MinusLevel();
+        }
+
+        private void Letter_Button_Pressed(object sender, RoutedEventArgs e)
+        {
+            
+            typeTrainee.PressButton(sender as Button);          
+        }
+
+
+        //HACK: Решение выглядит громоздким. Вероятно есть более оптимальное решение.
+        private void Key_Down_Handler(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+                       
+
+            switch (e.Key.ToString())
+            {
+                case "Space":
+                    Letter_Button_Pressed(bSpace, e);
+                    break;
+                case "Oem3":
+                    Letter_Button_Pressed(bYo, e);
+                    break;
+                case "D1":
+                    Letter_Button_Pressed(b1, e);
+                    break;
+                case "D2":
+                    Letter_Button_Pressed(b2, e);
+                    break;
+                case "D3":
+                    Letter_Button_Pressed(b3, e);
+                    break;
+                case "D4":
+                    Letter_Button_Pressed(b4, e);
+                    break;
+                case "D5":
+                    Letter_Button_Pressed(b5, e);
+                    break;
+                case "D6":
+                    Letter_Button_Pressed(b6, e);
+                    break;
+                case "D7":
+                    Letter_Button_Pressed(b7, e);
+                    break;
+                case "D8":
+                    Letter_Button_Pressed(b8, e);
+                    break;
+                case "D9":
+                    Letter_Button_Pressed(b9, e);
+                    break;
+                case "D0":
+                    Letter_Button_Pressed(b0, e);
+                    break;
+                case "OemMinus":
+                    Letter_Button_Pressed(bMinus, e);
+                    break;
+                case "OemPlus":
+                    Letter_Button_Pressed(bEqual, e);
+                    break;
+                case "Oem5":
+                    Letter_Button_Pressed(bDivide, e);
+                    break;
+                case "Q":
+                    Letter_Button_Pressed(bЙ, e);
+                    break;
+                case "W":
+                    Letter_Button_Pressed(bЦ, e);
+                    break;
+                case "E":
+                    Letter_Button_Pressed(bУ, e);
+                    break;
+                case "R":
+                    Letter_Button_Pressed(bК, e);
+                    break;
+                case "T":
+                    Letter_Button_Pressed(bЕ, e);
+                    break;
+                case "Y":
+                    Letter_Button_Pressed(bН, e);
+                    break;
+                case "U":
+                    Letter_Button_Pressed(bГ, e);
+                    break;
+                case "I":
+                    Letter_Button_Pressed(bШ, e);
+                    break;
+                case "O":
+                    Letter_Button_Pressed(bЩ, e);
+                    break;
+                case "P":
+                    Letter_Button_Pressed(bЗ, e);
+                    break;
+                case "OemOpenBrackets":
+                    Letter_Button_Pressed(bХ, e);
+                    break;
+                case "Oem6":
+                    Letter_Button_Pressed(bЪ, e);
+                    break;
+                case "A":
+                    Letter_Button_Pressed(bФ, e);
+                    break;
+                case "S":
+                    Letter_Button_Pressed(bЫ, e);
+                    break;
+                case "D":
+                    Letter_Button_Pressed(bВ, e);
+                    break;
+                case "F":
+                    Letter_Button_Pressed(bА, e);
+                    break;
+                case "G":
+                    Letter_Button_Pressed(bП, e);
+                    break;
+                case "H":
+                    Letter_Button_Pressed(bР, e);
+                    break;
+                case "J":
+                    Letter_Button_Pressed(bО, e);
+                    break;
+                case "K":
+                    Letter_Button_Pressed(bЛ, e);
+                    break;
+                case "L":
+                    Letter_Button_Pressed(bД, e);
+                    break;
+                case "Oem1":
+                    Letter_Button_Pressed(bЖ, e);
+                    break;
+                case "OemQuotes":
+                    Letter_Button_Pressed(bЭ, e);
+                    break;
+                case "Z":
+                    Letter_Button_Pressed(bЯ, e);
+                    break;
+                case "X":
+                    Letter_Button_Pressed(bЧ, e);
+                    break;
+                case "C":
+                    Letter_Button_Pressed(bС, e);
+                    break;
+                case "V":
+                    Letter_Button_Pressed(bМ, e);
+                    break;
+                case "B":
+                    Letter_Button_Pressed(bИ, e);
+                    break;
+                case "N":
+                    Letter_Button_Pressed(bТ, e);
+                    break;
+                case "M":
+                    Letter_Button_Pressed(bЬ, e);
+                    break;
+                case "OemComma":
+                    Letter_Button_Pressed(bБ, e);
+                    break;
+                case "OemPeriod":
+                    Letter_Button_Pressed(bЮ, e);
+                    break;
+                case "OemQuestion":
+                    Letter_Button_Pressed(bDot, e);
+                    break;
+
+            }
+        }       
+
+    }
+}
